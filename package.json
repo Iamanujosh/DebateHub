@@ -1,7 +1,7 @@
 {
-  "name": "admin",
+  "name": "debatehub",
   "version": "1.0.0",
-  "description": "",
+  "description": "Platform to arrange debate or start debate anonymously",
   "main": "index.js",
   "scripts": {
     "install-server": "cd debatehub-backend && npm install",
@@ -10,8 +10,16 @@
     "build-client": "cd debatehub-frontend && npm run build",
     "start-client": "cd debatehub-frontend && npm run start"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iamanujosh/DebateHub.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Iamanujosh/DebateHub/issues"
+  },
+  "homepage": "https://github.com/Iamanujosh/DebateHub#readme"
 }
