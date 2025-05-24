@@ -8,9 +8,27 @@ const authRoutes = require('./Routes/auth');
 const app = express();
 app.use(cors());
 app.use(express.json());
-console.log("MONGO_URI from env:", process.env.MONGO_URI);
 
-mongoose.connect(process.env.MONGO_URI).then(() => console.log("MongoDb Connected"));
+
+const connectDB = async () => {
+  try {
+    console.log("Connecting to MongoDB...");
+    
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000, // 10 second timeout
+      socketTimeoutMS: 45000, // 45 second socket timeout
+    });
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('MongoDB Connection Error:', error.message);
+    process.exit(1); // Exit with failure
+  }
+};
+
+connectDB();
 
     app.use('/api/auth',authRoutes);
     app.use((req, res, next) => {
