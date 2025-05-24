@@ -12,7 +12,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const response = await fetch('https://debatehub-1.onrender.com', {
+    const response = await fetch('https://debatehub-1.onrender.com/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
