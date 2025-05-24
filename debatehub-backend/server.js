@@ -6,7 +6,10 @@ require('dotenv').config();
 const authRoutes = require('./Routes/auth');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'https://debatehub-2.onrender.com', // your frontend URL
+  credentials: true // if using cookies or auth headers
+}));
 app.use(express.json());
 
 
