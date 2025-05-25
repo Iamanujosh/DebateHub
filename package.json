@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "install-server": "cd debatehub-backend && npm install",
-    "start-server": "cd debatehub-backend && npm start",
+    "start-server": "cd debatehub-backend && node server.js",
     "install-client": "cd debatehub-frontend && npm install",
     "build-client": "cd debatehub-frontend && npm run build",
     "start-client": "cd debatehub-frontend && npm run start"
