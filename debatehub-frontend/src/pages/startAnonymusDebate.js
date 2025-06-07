@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function StartAnonymusDebate() {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     person1: '',
     topic: '',
@@ -16,15 +19,53 @@ export default function StartAnonymusDebate() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', form);
-    // Add your form logic here (e.g., send to backend)
+    await fetch('https://debatehub.onrender.com/set-online', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user: form.person1, topic: form.topic, isOnline: true }),
+});
+
+  setIsLoading(true);
+
+    const poll = async (retries = 10, delay = 3000) => {
+      for (let i = 0; i < retries; i++) {
+        const response = await fetch(
+          `https://debatehub.onrender.com/online-users?requestingUser=${form.person1}&requestingUserTopic=${form.topic}`
+        );
+        const opponentData = await response.json();
+
+        if (opponentData && opponentData.user) {
+          const opponent = opponentData.user;
+          const roomId = generateRoomId(form.person1, opponent);
+          navigate(`/debate-room/${roomId}`);
+          return;
+        }
+
+        // Wait before trying again
+        await new Promise(res => setTimeout(res, delay));
+      }
+
+      alert("No opponent found. Try again later.");
+      setIsLoading(false);
+    };
+
+    poll();
+  
   };
 
+ const generateRoomId = (a, b) => {
+  const now = new Date();
+  const minutes = Math.floor(now.getTime() / (1000 * 60));
+  return [a.trim().toLowerCase(), b.trim().toLowerCase()]
+    .sort()
+    .join('-vs-') + `-${minutes}`;
+};
+
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md space-y-4">
-      <h2 className="text-2xl font-bold text-gray-800">Start a Debate</h2>
+    <form onSubmit={handleSubmit} disabled={isLoading} className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md space-y-4">
+      <h2 className="text-2xl font-bold text-gray-800">{isLoading ? 'Finding opponent...' : 'Start Debate'}</h2>
 
       <div>
         <label className="block text-gray-700 font-medium mb-1">Enter Name</label>

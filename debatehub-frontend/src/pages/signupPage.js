@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// require('dotenv').config();
 
 export default function Signup() {
   const navigate = useNavigate();

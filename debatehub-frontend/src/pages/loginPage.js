@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// require('dotenv').config();
+
 export default function Login() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
@@ -24,6 +26,7 @@ export default function Login() {
 
     if (response.ok) {
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username',data.user.name)
       alert('Login successful!');
       navigate('/'); // or any route you want
     } else {

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function StartDebate() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     person1: '',
     person2: '',
@@ -19,10 +21,17 @@ export default function StartDebate() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Form submitted:', form);
-    // Add your form logic here (e.g., send to backend)
+    const roomId = generateRoomId(form.person1, form.person2);
+    navigate(`/debate-room/${roomId}`);
   };
 
+  const generateRoomId = (a, b) => {
+  const now = new Date();
+  const minutes = Math.floor(now.getTime() / (1000 * 60));
+  return [a.trim().toLowerCase(), b.trim().toLowerCase()]
+    .sort()
+    .join('-vs-') + `-${minutes}`;
+};
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md space-y-4">
       <h2 className="text-2xl font-bold text-gray-800">Arrange a Debate</h2>
@@ -86,7 +95,7 @@ export default function StartDebate() {
         type="submit"
         className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md transition-all duration-200"
       >
-        Submit
+        Start Debate
       </button>
     </form>
   );
